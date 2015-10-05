@@ -48,13 +48,19 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+Retweeting was pretty difficult. Figuring out how to find the media file was also pretty difficult. 
+
+The tip for figuring out how to get items with autolinks in ListView clickable was super helpful.
+
+Also, action bars are total pain. I would much rather create my own view (which I end up doing in some cases) that mimics the action bar.
 
 ## Open-source libraries used
 
 - [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
 - [Picasso](http://square.github.io/picasso/) - Image loading and caching library for Android
-
+- [RoundedImageView](https://github.com/vinc3m1/RoundedImageView) - Image loading and caching library for Android
+- [MaterialDialog](https://github.com/afollestad/material-dialogs)
+- [Clickable links with ListViews](http://michaelevans.org/blog/2013/03/29/clickable-links-in-android-listviews/) - A bug fix for the TextView so that we can click on the item in the ListView and have clickable links.
 ## License
 
     Copyright [2015] [Lita Cho]
