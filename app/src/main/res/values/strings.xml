@@ -12,6 +12,8 @@
     <string name="title_activity_detail_tweet">DetailTweetActivity</string>
     <string name="detail_retweet">RETWEETS</string>
     <string name="detail_favorites">FAVORITES</string>
+    <string name="neutral">Close</string>
+    <string name="reply">in reply to</string>
 
 
 

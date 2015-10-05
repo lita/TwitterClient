@@ -21,9 +21,16 @@ android {
 repositories {
     jcenter()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
+    compile('com.afollestad.material-dialogs:core:0.8.1.0@aar') {
+        transitive = true
+    }
+    compile('com.afollestad.material-dialogs:commons:0.8.1.0@aar') {
+        transitive = true
+    }
     compile fileTree(dir: 'libs', include: '*.jar')
     compile 'com.android.support:support-v4:23.0.0'
     compile 'com.android.support:appcompat-v7:23.0.0'
@@ -35,5 +42,4 @@ dependencies {
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.makeramen:roundedimageview:2.2.0'
     compile 'com.android.support:percent:23.0.0'
-    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }

@@ -28,12 +28,23 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/tvReplyTo"
+            android:textSize="0dp"
+            android:textColor="@color/gray"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:includeFontPadding="false"
             android:text="Billy"
             android:textStyle="bold"
             android:id="@+id/tvFullName"
             android:layout_marginRight="5dp"
-            android:layout_alignParentTop="true"
+            android:layout_below="@id/tvReplyTo"
             android:gravity="top" />
         <TextView
             android:layout_width="wrap_content"
@@ -43,7 +54,6 @@
             android:text="\@Billy"
             android:textColor="@color/user_name_gray"
             android:id="@+id/tvUserName"
-            android:layout_alignParentTop="true"
             android:layout_alignBottom="@+id/tvFullName"
             android:gravity="center" />
         <TextView
@@ -66,8 +76,19 @@
             android:layout_below="@+id/tvFullName"
             android:text="New Text"
             android:autoLink="all"
-            android:id="@+id/tvBody" />
+            android:id="@+id/tvBody"
+            android:paddingBottom="8dp"/>
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxHeight="80dp"
+            android:id="@+id/ivMedia"
+            android:scaleType="centerCrop"
+            android:layout_below="@id/tvBody"
+            app:riv_corner_radius="7dip"
+            />
     </RelativeLayout>
+
     <android.support.percent.PercentRelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -141,4 +162,5 @@
             android:layout_alignBottom="@+id/ibStar"
             android:layout_toRightOf="@id/ibStar"/>
     </android.support.percent.PercentRelativeLayout>
+
 </RelativeLayout>

@@ -98,7 +98,9 @@ public class ComposeDialog extends DialogFragment {
         User user = getArguments().getParcelable("user");
         Tweet tweet = getArguments().getParcelable("retweet");
         if (tweet != null) {
-            etCompose.setText(tweet.getUser().getScreenName());
+            String username = tweet.getUser().getScreenNameForView();
+            etCompose.setText(username);
+            etCompose.setSelection(username.length());
         }
         Picasso.with(getActivity()).load(user.getProfileImageUrl()).into(rivUserProfile);
 

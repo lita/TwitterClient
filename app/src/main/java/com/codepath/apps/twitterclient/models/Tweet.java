@@ -35,6 +35,25 @@ public class Tweet extends Model implements Parcelable {
     private String retweetCount;
     @Column(name = "favoriteCount")
     private String favoriteCount;
+    @Column(name = "inReplyToScreenName")
+    private String inReplyToScreenName;
+    @Column(name="mediaUrl")
+    private String mediaUrl;
+
+    public String getMediaUrl() {
+        return mediaUrl;
+    }
+
+    public String getInReplyToScreenName() {
+        return inReplyToScreenName;
+    }
+
+    public String getInReplyToScreenNameForView() {
+        if (inReplyToScreenName != null) {
+            return "@" + inReplyToScreenName;
+        }
+        return "";
+    }
 
     public String getRetweetCount() {
         return retweetCount;
@@ -84,6 +103,13 @@ public class Tweet extends Model implements Parcelable {
             tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
             tweet.favoriteCount = jsonObject.getString("favorite_count");
             tweet.retweetCount = jsonObject.getString("retweet_count");
+            JSONObject entities = jsonObject.getJSONObject("entities");
+            if (entities.has("media")) {
+                tweet.mediaUrl= entities.getJSONArray("media").getJSONObject(0).getString("media_url");
+            }
+            if (jsonObject.getString("in_reply_to_screen_name") != "null") {
+                tweet.inReplyToScreenName = jsonObject.getString("in_reply_to_screen_name");
+            }
             tweet.save();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -134,6 +160,9 @@ public class Tweet extends Model implements Parcelable {
         return relativeDate;
     }
 
+    public Tweet() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -147,9 +176,8 @@ public class Tweet extends Model implements Parcelable {
         dest.writeString(this.createdAt);
         dest.writeString(this.retweetCount);
         dest.writeString(this.favoriteCount);
-    }
-
-    public Tweet() {
+        dest.writeString(this.inReplyToScreenName);
+        dest.writeString(this.mediaUrl);
     }
 
     protected Tweet(Parcel in) {
@@ -159,9 +187,11 @@ public class Tweet extends Model implements Parcelable {
         this.createdAt = in.readString();
         this.retweetCount = in.readString();
         this.favoriteCount = in.readString();
+        this.inReplyToScreenName = in.readString();
+        this.mediaUrl = in.readString();
     }
 
-    public static final Parcelable.Creator<Tweet> CREATOR = new Parcelable.Creator<Tweet>() {
+    public static final Creator<Tweet> CREATOR = new Creator<Tweet>() {
         public Tweet createFromParcel(Parcel source) {
             return new Tweet(source);
         }

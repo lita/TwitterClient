@@ -22,6 +22,7 @@ import com.activeandroid.query.Select;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.adapters.TweetsArrayAdapter;
 import com.codepath.apps.twitterclient.fragments.ComposeDialog;
+import com.codepath.apps.twitterclient.helpers.DialogHelpers;
 import com.codepath.apps.twitterclient.listeners.EndlessScrollListener;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.models.User;
@@ -103,12 +104,11 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            // Extract name value from result extras
             Tweet tweet = data.getExtras().getParcelable("tweet");
             if (tweet == null) {
                 return;
             }
-            aTweets.add(tweet);
+            aTweets.insert(tweet, 0);
             aTweets.notifyDataSetChanged();
         }
     }
@@ -116,6 +116,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
     private void propagateFromDatabase() {
         List<Tweet> tweets = new Select().from(Tweet.class).limit(100).execute();
         aTweets.addAll(tweets);
+        swipeContainer.setRefreshing(false);
     }
 
     private void populateTimeline(long lastId, final boolean clear, final boolean startup) {
@@ -128,10 +129,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
         twitterClient.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                if (startup) {
-                    // Figure out how to clear database
-                }
-
                 if (clear) {
                     aTweets.clear();
                     swipeContainer.setRefreshing(false);
@@ -192,6 +189,8 @@ public class TimelineActivity extends AppCompatActivity implements ComposeDialog
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 Log.i("DEUBG", "Failed to send tweet. Got error code " + Integer.toString(statusCode) + " Response " + responseString);
+                DialogHelpers.showAlert(TimelineActivity.this, "Networking Error",
+                        "We couldn't post your tweet. Please make sure you are connected to the internet.");
             }
 
         }, tweet);

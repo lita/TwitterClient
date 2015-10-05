@@ -28,6 +28,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView tvCreatedAt;
         TextView tvRetweetCount;
         TextView tvFavoriteCount;
+        TextView tvReplyTo;
+        ImageView ivMedia;
     }
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
         super(context, 0, tweets);
@@ -47,6 +49,8 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.tvCreatedAt = (TextView) convertView.findViewById(R.id.tvCreatedAt);
             viewHolder.tvFavoriteCount = (TextView) convertView.findViewById(R.id.tvFavoriteCount);
             viewHolder.tvRetweetCount = (TextView) convertView.findViewById(R.id.tvRetweetCount);
+            viewHolder.tvReplyTo = (TextView) convertView.findViewById(R.id.tvReplyTo);
+            viewHolder.ivMedia = (ImageView) convertView.findViewById(R.id.ivMedia);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (TweetViewHolder) convertView.getTag();
@@ -58,6 +62,22 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         viewHolder.tvCreatedAt.setText(tweet.getRelativeCreatedAt());
         viewHolder.tvRetweetCount.setText(tweet.getRetweetCount());
         viewHolder.tvFavoriteCount.setText(tweet.getFavoriteCount());
+        viewHolder.ivProfileImage.setImageResource(0);
+        viewHolder.ivMedia.setImageResource(0);
+
+        if (tweet.getInReplyToScreenName() != null) {
+            String replyText = getContext().getResources().getString(R.string.reply);
+            viewHolder.tvReplyTo.setText(replyText + " " + tweet.getInReplyToScreenNameForView());
+            viewHolder.tvReplyTo.setTextSize(12);
+        } else {
+            viewHolder.tvReplyTo.setTextSize(0);
+        }
+
+        Picasso.with(getContext())
+                .load(tweet.getMediaUrl())
+                .resize(0, 400)
+                .into(viewHolder.ivMedia);
+
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).placeholder(R.drawable.placeholder).into(viewHolder.ivProfileImage);
         return convertView;
     }

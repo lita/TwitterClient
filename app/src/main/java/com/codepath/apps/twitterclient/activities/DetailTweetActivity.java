@@ -13,10 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.fragments.ComposeDialog;
+import com.codepath.apps.twitterclient.helpers.DialogHelpers;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.models.User;
 import com.codepath.apps.twitterclient.network.TwitterApplication;
@@ -38,6 +40,7 @@ public class DetailTweetActivity extends AppCompatActivity implements ComposeDia
     private TextView tvDetailBody;
     private TextView tvDetailTweetStats;
     private TextView tvDetailViewCreatedAt;
+    private ImageView ivDetailMedia;
     private ImageButton ibReplyDetail;
     private Tweet tweet;
     private RoundedImageView ivDetailProfileImage;
@@ -67,6 +70,7 @@ public class DetailTweetActivity extends AppCompatActivity implements ComposeDia
             actionBar.setDisplayShowTitleEnabled(false);
             actionBar.setCustomView(header);
             actionBar.setDisplayShowCustomEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
         }
     }
 
@@ -78,6 +82,7 @@ public class DetailTweetActivity extends AppCompatActivity implements ComposeDia
         tvDetailViewCreatedAt = (TextView) findViewById(R.id.tvDetailViewCreatedAt);
         ivDetailProfileImage = (RoundedImageView) findViewById(R.id.ivDetailProfileImage);
         ibReplyDetail = (ImageButton) findViewById(R.id.ibReplyDetail);
+        ivDetailMedia = (ImageView) findViewById(R.id.ivDetailMedia);
         tvFullNameDetail.setText(tweet.getUser().getScreenNameForView());
         tvUserNameDetial.setText(tweet.getUser().getScreenName());
         tvDetailBody.setText(Html.fromHtml(tweet.getBody()));
@@ -85,6 +90,13 @@ public class DetailTweetActivity extends AppCompatActivity implements ComposeDia
         tvDetailViewCreatedAt.setText(getFormartedDate());
         setupReplyTweet();
         Picasso.with(this).load(tweet.getUser().getProfileImageUrl()).placeholder(R.drawable.placeholder).into(ivDetailProfileImage);
+        if (tweet.getMediaUrl() != null) {
+            Picasso.with(this)
+                    .load(tweet.getMediaUrl())
+                    .fit()
+                    .placeholder(R.drawable.placeholder)
+                    .into(ivDetailMedia);
+        }
     }
 
     protected void setupReplyTweet() {
@@ -92,7 +104,7 @@ public class DetailTweetActivity extends AppCompatActivity implements ComposeDia
             @Override
             public void onClick(View v) {
                 FragmentManager fm = getFragmentManager();
-                ComposeDialog dialog = ComposeDialog.newInstance(signedInUser);
+                ComposeDialog dialog = ComposeDialog.newInstance(signedInUser, tweet);
                 dialog.show(fm, "compose_retweet");
             }
         });
@@ -157,7 +169,9 @@ public class DetailTweetActivity extends AppCompatActivity implements ComposeDia
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                Log.i("DEUBG", "Failed to send tweet. Got error code " + Integer.toString(statusCode) + " Response " + responseString);
+                Log.i("DEUBG", "Failed to send tweet. Got error code " + Integer.toString(statusCode));
+                DialogHelpers.showAlert(DetailTweetActivity.this, "Networking Error",
+                        "We couldn't post your tweet. Please make sure you are connected to the internet.");
             }
 
         }, tweet, this.tweet.getUid());

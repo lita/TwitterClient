@@ -3,6 +3,7 @@
     <color name="user_name_gray">#A2B0BA</color>
     <color name="primary_twitter_accent">#B3E5FC</color>
     <color name="primary_twitter_bar">#55ACEE</color>
+    <color name="primary_twitter_dark">#0288D1</color>
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00FFFFFF</color>
     <color name="error_color">#CC3300</color>
