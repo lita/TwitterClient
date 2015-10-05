@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/ivDetailProfileImage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/litatwitterphoto"
+        app:riv_corner_radius="2dip"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/profileContainer"
+        android:layout_alignTop="@id/ivDetailProfileImage"
+        android:layout_alignBottom="@id/ivDetailProfileImage"
+        android:layout_toRightOf="@+id/ivDetailProfileImage"
+        android:layout_toEndOf="@+id/ivDetailProfileImage"
+        android:layout_marginLeft="8dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:layout_alignParentTop="true"
+            android:text="Billy"
+            android:textStyle="bold"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:id="@+id/tvFullNameDetial"
+            android:layout_above="@+id/tvUserNameDetial"
+            android:layout_marginRight="5dp"
+            android:gravity="bottom" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:layout_alignParentBottom="true"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="\@Billy"
+            android:textColor="@color/user_name_gray"
+            android:id="@+id/tvUserNameDetial"
+            android:gravity="top" />
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profileContainer"
+        android:id="@+id/tvDetailBody"
+        android:paddingLeft="8dp"
+        android:paddingTop="15dp"
+        android:paddingRight="8dp"
+        android:paddingBottom="8dp"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:autoLink="all"
+        android:text="This is a tweet"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:id="@+id/tvDetailViewCreatedAt"
+        android:layout_below="@+id/tvDetailBody"
+        android:text="3:10PM 04 Oct 15"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tvDetailViewCreatedAt"
+        android:id="@+id/seperatorDate"
+        android:background="@color/light_gray"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingTop="13dp"
+        android:paddingBottom="13dp"
+        android:id="@+id/tvDetailTweetStats"
+        android:layout_below="@+id/seperatorDate"
+        android:text="23 RETWEETS 43 FAVORITES"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/tvDetailTweetStats"
+        android:id="@+id/seperatorDetailTweets"
+        android:background="@color/light_gray"/>
+
+    <android.support.percent.PercentRelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/seperatorDetailTweets"
+        android:layout_marginLeft="5dp">
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/vFrontSpacer"
+            app:layout_widthPercent="15%"/>
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="fitXY"
+            android:layout_toRightOf="@+id/vFrontSpacer"
+            android:id="@+id/ibReplyDetail"
+            android:src="@drawable/ic_reply"
+            android:background="@color/transparent"
+            />
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/ibReplyDetail"
+            android:id="@+id/vReplyRetweetSpacer"
+            app:layout_widthPercent="20%"/>
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="fitXY"
+            android:gravity="center"
+            android:src="@drawable/ic_retweet"
+            android:id="@+id/ibRetweetDetail"
+            android:adjustViewBounds="true"
+            android:layout_toRightOf="@id/vReplyRetweetSpacer"
+            android:background="@color/transparent" />
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ibRetweetDetail"
+            android:id="@+id/vRetweetStarSpacerDetail"
+            app:layout_widthPercent="20%"/>
+
+
+        <ImageButton
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:scaleType="fitXY"
+            android:gravity="center"
+            android:src="@drawable/ic_star"
+            android:id="@+id/ibStarDetail"
+            android:layout_toRightOf="@id/vRetweetStarSpacerDetail"
+            android:background="@color/transparent"/>
+    </android.support.percent.PercentRelativeLayout>
+
+
+
+</RelativeLayout>

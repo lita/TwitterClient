@@ -2,6 +2,9 @@ package com.codepath.apps.twitterclient.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 
@@ -14,6 +17,16 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterRestClient
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		ActionBar actionBar = getSupportActionBar();
+		if (actionBar != null) {
+			LayoutInflater inflater = LayoutInflater.from(this);
+			View header = inflater.inflate(R.layout.action_bar_login, null);
+			actionBar.setBackgroundDrawable(ContextCompat.getDrawable(this,
+					R.drawable.main_twitter_actionbar_background));
+			actionBar.setDisplayShowTitleEnabled(false);
+			actionBar.setCustomView(header);
+			actionBar.setDisplayShowCustomEnabled(true);
+		}
 		setContentView(R.layout.activity_login);
 	}
 
