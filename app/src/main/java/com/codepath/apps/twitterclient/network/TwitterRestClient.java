@@ -98,7 +98,7 @@ public class TwitterRestClient extends OAuthBaseClient {
     public void getUserBanner(AsyncHttpResponseHandler handler, String screenName) {
         String apiUrl = getApiUrl("users/profile_banner.json");
         RequestParams params = new RequestParams();
-        //params.put("screen_name", screenName);
+        params.put("screen_name", screenName);
         getClient().get(apiUrl, params, handler);
     }
 

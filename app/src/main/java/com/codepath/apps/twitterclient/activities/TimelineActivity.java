@@ -1,6 +1,7 @@
 package com.codepath.apps.twitterclient.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.activeandroid.query.Select;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.adapters.TweetsPagerAdapter;
 import com.codepath.apps.twitterclient.fragments.ComposeDialog;
@@ -27,6 +29,8 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.json.JSONObject;
+
+import java.util.List;
 
 public class TimelineActivity extends BaseTwitterActivty  {
     protected TwitterRestClient twitterClient;
@@ -115,10 +119,12 @@ public class TimelineActivity extends BaseTwitterActivty  {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 user = User.fromJSON(response);
+                saveSignedInUser(user);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                user = getSignedInUserOffline();
                 Log.i("DEBUG", "Code: " + Integer.toString(statusCode) + " We failed to get user data: " + errorResponse.toString());
 
             }
@@ -151,5 +157,21 @@ public class TimelineActivity extends BaseTwitterActivty  {
             }
 
         }, tweet, retweetId);
+    }
+
+    public void saveSignedInUser(User user) {
+        SharedPreferences mSettings = this.getSharedPreferences("TwitterSettings", 0);
+        SharedPreferences.Editor editor = mSettings.edit();
+        editor.putString("signedInUser", user.getScreenName());
+    }
+
+    public User getSignedInUserOffline() {
+        SharedPreferences mSettings = this.getSharedPreferences("TwitterSettings", 0);
+        String signedInUserScreenName = mSettings.getString("signedInUser", null);
+        if (signedInUserScreenName != null) {
+            List<User> user = new Select().from(User.class).where("screenName = ?", signedInUserScreenName).execute();
+            return user.get(0);
+        }
+        return null;
     }
 }

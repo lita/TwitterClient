@@ -1,8 +1,10 @@
 package com.codepath.apps.twitterclient.fragments;
 
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.apps.twitterclient.R;
+import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.models.User;
 import com.codepath.apps.twitterclient.network.TwitterApplication;
 import com.codepath.apps.twitterclient.network.TwitterRestClient;
@@ -54,6 +57,11 @@ public class HeaderFragment extends Fragment {
                 }
 
                 @Override
+                protected void handleMessage(Message message) {
+                    super.handleMessage(message);
+                }
+
+                @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     Log.i("DEUBG", errorResponse.toString());
                 }
@@ -75,7 +83,7 @@ public class HeaderFragment extends Fragment {
             TextView tvFollowing = (TextView) profileView.findViewById(R.id.tvFollowingCount);
             tvFullName.setText(user.getName());
             tvScreenName.setText(user.getScreenNameForView());
-            tvTagLine.setText(user.getTagLine());
+            tvTagLine.setText(Html.fromHtml(Tweet.processCaptionsToHTML(user.getTagLine())));
             tvFollowers.setText(user.getFollowersCount());
             tvFollowing.setText(user.getFollowingCount());
             Picasso.with(profileView.getContext()).load(user.getProfileImageUrl()).placeholder(R.drawable.placeholder).into(rivProfileImage);

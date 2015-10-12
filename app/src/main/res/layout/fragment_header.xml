@@ -8,6 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="90dp"
         android:id="@+id/ivProfileBanner"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"

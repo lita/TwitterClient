@@ -1,14 +1,9 @@
 package com.codepath.apps.twitterclient.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
-import com.codepath.apps.twitterclient.listeners.EndlessScrollListener;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.models.User;
 import com.codepath.apps.twitterclient.network.TwitterApplication;
@@ -31,30 +26,6 @@ public class HomeTimelineFragment extends TweetListFragment {
         return frag;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        super.onResume();
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                populateTimeline(-1, true, false);
-            }
-        });
-
-        lvTweets.setOnScrollListener(new EndlessScrollListener() {
-            @Override
-            public boolean onLoadMore(int page, int totalItemCount) {
-                Tweet lastTweet = tweets.get(tweets.size() - 1);
-                populateTimeline(lastTweet.getUid(), false, false);
-                return true;
-            }
-        });
-
-        return view;
-    }
-
     public void populateTimeline(long lastId, final boolean clear, final boolean startup) {
 
         if (!TwitterApplication.isNetworkAvailable(getActivity())) {
@@ -69,6 +40,7 @@ public class HomeTimelineFragment extends TweetListFragment {
                     clear();
                 }
                 addAll(Tweet.fromJSONArray(response));
+                pbProgressAction.setVisibility(View.GONE);
             }
 
             @Override

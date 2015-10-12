@@ -9,10 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.activeandroid.query.Select;
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.adapters.TweetsArrayAdapter;
+import com.codepath.apps.twitterclient.listeners.EndlessScrollListener;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.models.User;
 import com.codepath.apps.twitterclient.network.TwitterApplication;
@@ -31,6 +33,7 @@ public abstract class TweetListFragment extends Fragment {
     protected SwipeRefreshLayout swipeContainer;
     protected TwitterRestClient twitterClient;
     protected User signedInUser;
+    protected ProgressBar pbProgressAction;
 
     public interface OnTweetItemListener {
         public void launchDetailTweetView(Tweet tweet);
@@ -43,6 +46,13 @@ public abstract class TweetListFragment extends Fragment {
         signedInUser = getArguments().getParcelable("user");
 
         lvTweets = (ListView) view.findViewById(R.id.lvTweets);
+        View footer = inflater.inflate(
+                R.layout.footer_progress, null);
+        // Find the progressbar within footer
+        pbProgressAction = (ProgressBar)
+                footer.findViewById(R.id.pbFooterLoading);
+        // Add footer to ListView before setting adapter
+        lvTweets.addFooterView(footer);
         lvTweets.setAdapter(aTweets);
         lvTweets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -53,6 +63,25 @@ public abstract class TweetListFragment extends Fragment {
             }
         });
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                populateTimeline(-1, true, false);
+            }
+        });
+
+        lvTweets.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemCount) {
+                if (tweets.isEmpty()) {
+                    return false;
+                }
+                Tweet lastTweet = tweets.get(tweets.size() - 1);
+                populateTimeline(lastTweet.getUid(), false, false);
+                return true;
+            }
+        });
+        pbProgressAction.setVisibility(View.VISIBLE);
         populateTimeline(-1, false, true);
         return view;
     }
@@ -98,6 +127,7 @@ public abstract class TweetListFragment extends Fragment {
         List<Tweet> tweets = new Select().from(Tweet.class).limit(100).execute();
         addAll(tweets);
         swipeContainer.setRefreshing(false);
+        pbProgressAction.setVisibility(View.GONE);
     }
 
     abstract public void populateTimeline(long lastId, final boolean clear, final boolean startup);
