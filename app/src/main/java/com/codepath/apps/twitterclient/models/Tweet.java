@@ -22,7 +22,6 @@ import java.util.Locale;
  */
 @Table(name = "Tweets")
 public class Tweet extends Model implements Parcelable {
-
     @Column(name = "body")
     private String body;
     @Column(name = "uid", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
@@ -200,4 +199,9 @@ public class Tweet extends Model implements Parcelable {
             return new Tweet[size];
         }
     };
+
+    public void incrementFavoriteCount() {
+        int favCount = Integer.getInteger(favoriteCount);
+        favoriteCount = Integer.toString(favCount + 1);
+    }
 }

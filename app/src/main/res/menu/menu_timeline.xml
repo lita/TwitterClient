@@ -2,7 +2,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.codepath.apps.twitterclient.activities.TimelineActivity">
-    <item android:id="@+id/action_compose"
+    <item
+        android:id="@+id/miProfile"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile"
+        android:onClick="onProfileView"/>.
+    <item android:id="@+id/miCompose"
         android:title="compose"
         android:icon="@drawable/ic_compose"
         android:orderInCategory="100"

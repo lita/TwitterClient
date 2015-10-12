@@ -1,6 +1,9 @@
 package com.codepath.apps.twitterclient.network;
 
+import android.app.Activity;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 /*
  * This is the Android application itself and is used to configure various settings
@@ -22,5 +25,11 @@ public class TwitterApplication extends com.activeandroid.app.Application {
 
 	public static TwitterRestClient getRestClient() {
 		return (TwitterRestClient) TwitterRestClient.getInstance(TwitterRestClient.class, TwitterApplication.context);
+	}
+
+	public static boolean isNetworkAvailable(Activity activity) {
+		ConnectivityManager connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+		return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
 	}
 }

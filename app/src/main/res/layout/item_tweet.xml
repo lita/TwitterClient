@@ -9,7 +9,7 @@
     <com.makeramen.roundedimageview.RoundedImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/ivProfileImage"
+        android:id="@+id/rivProfileImageProfileView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -21,9 +21,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/twitterBodyContainer"
-        android:layout_alignTop="@id/ivProfileImage"
-        android:layout_toRightOf="@+id/ivProfileImage"
-        android:layout_toEndOf="@+id/ivProfileImage"
+        android:layout_alignTop="@id/rivProfileImageProfileView"
+        android:layout_toRightOf="@+id/rivProfileImageProfileView"
+        android:layout_toEndOf="@+id/rivProfileImageProfileView"
         android:layout_marginLeft="8dp">
         <TextView
             android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_toRightOf="@+id/rivProfileImageProfileView"
         android:layout_below="@id/twitterBodyContainer"
         android:layout_marginLeft="5dp">
 
@@ -140,7 +140,6 @@
             android:layout_toRightOf="@+id/ibRetweet"
             android:id="@+id/vRetweetStarSpacer"
             app:layout_widthPercent="27%"/>
-
 
         <ImageButton
             android:layout_width="25dp"

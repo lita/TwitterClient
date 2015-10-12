@@ -1,11 +1,9 @@
 package com.codepath.apps.twitterclient.activities;
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +32,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-public class DetailTweetActivity extends AppCompatActivity implements ComposeDialog.ComposeTweetListener {
+public class DetailTweetActivity extends BaseTwitterActivty {
     private TextView tvFullNameDetail;
     private TextView tvUserNameDetial;
     private TextView tvDetailBody;
@@ -63,7 +61,9 @@ public class DetailTweetActivity extends AppCompatActivity implements ComposeDia
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             LayoutInflater inflater = LayoutInflater.from(this);
-            View header = inflater.inflate(R.layout.action_bar_detail, null);
+            View header = inflater.inflate(R.layout.action_bar, null);
+            TextView tvTitle = (TextView) header.findViewById(R.id.tvTitle);
+            tvTitle.setText(getResources().getString(R.string.tweet));
             actionBar.setBackgroundDrawable(ContextCompat.getDrawable(this,
                     R.drawable.main_twitter_actionbar_background))
             ;
@@ -103,9 +103,8 @@ public class DetailTweetActivity extends AppCompatActivity implements ComposeDia
         ibReplyDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager fm = getFragmentManager();
                 ComposeDialog dialog = ComposeDialog.newInstance(signedInUser, tweet);
-                dialog.show(fm, "compose_retweet");
+                dialog.show(getSupportFragmentManager(), "compose_retweet");
             }
         });
     }
@@ -156,7 +155,7 @@ public class DetailTweetActivity extends AppCompatActivity implements ComposeDia
     }
 
     @Override
-    public void sendTweet(String tweet) {
+    public void sendTweet(String tweet, Tweet retweet) {
         twitterClient.setComposeTweet(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

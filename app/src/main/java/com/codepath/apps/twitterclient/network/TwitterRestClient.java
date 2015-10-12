@@ -44,6 +44,17 @@ public class TwitterRestClient extends OAuthBaseClient {
 		getClient().get(apiUrl, params, handler);
 	}
 
+    public void getMentionsTimeline(AsyncHttpResponseHandler handler, long lastId) {
+        String apiUrl = getApiUrl("statuses/mentions_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 100);
+        if (lastId > -1) {
+            params.put("max_id", lastId);
+        }
+        // Execute the request
+        getClient().get(apiUrl, params, handler);
+    }
+
 	// COMPOSING A TWEET
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");
@@ -53,26 +64,54 @@ public class TwitterRestClient extends OAuthBaseClient {
 	 *    i.e client.get(apiUrl, params, handler);
 	 *    i.e client.post(apiUrl, params, handler);
 	 */
-	public void setComposeTweet(AsyncHttpResponseHandler handler, String tweet) {
-		String apiUrl = getApiUrl("statuses/update.json");
-		RequestParams params = new RequestParams();
-		params.put("status", tweet);
-		// Execute the request
-		getClient().post(apiUrl, params, handler);
-	}
 
     public void setComposeTweet(AsyncHttpResponseHandler handler, String tweet, long replyId) {
         String apiUrl = getApiUrl("statuses/update.json");
         RequestParams params = new RequestParams();
         params.put("status", tweet);
-        params.put("in_reply_to_status_id", replyId);
+        if (replyId > -1) {
+            params.put("in_reply_to_status_id", replyId);
+        }
         // Execute the request
         getClient().post(apiUrl, params, handler);
     }
 
+    public void getUserTimeline(AsyncHttpResponseHandler handler, long lastId, String screenName) {
+        String apiUrl = getApiUrl("statuses/user_timeline.json");
+        RequestParams params = new RequestParams();
+        params.put("count", 100);
+        if (lastId > -1) {
+            params.put("max_id", lastId);
+        }
+
+        params.put("screen_name", screenName);
+
+        // Execute the request
+        getClient().get(apiUrl, params, handler);
+    }
 
     public void getSignedInUserData(AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("account/verify_credentials.json");
 		getClient().get(apiUrl, handler);
 	}
+
+    public void getUserBanner(AsyncHttpResponseHandler handler, String screenName) {
+        String apiUrl = getApiUrl("users/profile_banner.json");
+        RequestParams params = new RequestParams();
+        //params.put("screen_name", screenName);
+        getClient().get(apiUrl, params, handler);
+    }
+
+    public void postRetweet(AsyncHttpResponseHandler handler, long tweetId) {
+        String apiUrl = getApiUrl("statuses/retweet/" + Long.toString(tweetId) + ".json");
+        RequestParams params = new RequestParams();
+        getClient().post(apiUrl, params, handler);
+    }
+
+    public void postFavorite(AsyncHttpResponseHandler handler, long tweetId) {
+        String apiUrl = getApiUrl("statuses/retweet/favorites/create.json");
+        RequestParams params = new RequestParams();
+        params.put("id", tweetId);
+        getClient().post(apiUrl, params, handler);
+    }
 }

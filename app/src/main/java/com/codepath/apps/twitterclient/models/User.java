@@ -23,6 +23,18 @@ public class User extends Model implements Parcelable {
     private String screenName;
     @Column(name = "profileImageUrl")
     private String profileImageUrl;
+    @Column(name = "tagLine")
+    private String tagLine;
+    @Column(name = "followersCount")
+    private String followersCount;
+    @Column(name = "followingCount")
+    private String followingCount;
+    @Column(name = "bannerImageUrl")
+    private String bannerImageUrl;
+
+    public String getBannerImageUrl() {
+        return bannerImageUrl;
+    }
 
     public static User fromJSON(JSONObject jsonObject) {
         User user = new User();
@@ -31,11 +43,27 @@ public class User extends Model implements Parcelable {
             user.name = jsonObject.getString("name");
             user.screenName = jsonObject.getString("screen_name");
             user.profileImageUrl = jsonObject.getString("profile_image_url");
+            user.tagLine = jsonObject.getString("description");
+            user.followersCount = jsonObject.getString("followers_count");
+            user.followingCount = jsonObject.getString("friends_count");
+
             user.save();
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return user;
+    }
+
+    public String getFollowingCount() {
+        return followingCount;
+    }
+
+    public String getTagLine() {
+        return tagLine;
+    }
+
+    public String  getFollowersCount() {
+        return followersCount;
     }
 
     public String getName() {
@@ -58,6 +86,8 @@ public class User extends Model implements Parcelable {
         return profileImageUrl;
     }
 
+    public User() {
+    }
 
     @Override
     public int describeContents() {
@@ -70,9 +100,10 @@ public class User extends Model implements Parcelable {
         dest.writeLong(this.uid);
         dest.writeString(this.screenName);
         dest.writeString(this.profileImageUrl);
-    }
-
-    public User() {
+        dest.writeString(this.tagLine);
+        dest.writeString(this.followersCount);
+        dest.writeString(this.followingCount);
+        dest.writeString(this.bannerImageUrl);
     }
 
     protected User(Parcel in) {
@@ -80,9 +111,13 @@ public class User extends Model implements Parcelable {
         this.uid = in.readLong();
         this.screenName = in.readString();
         this.profileImageUrl = in.readString();
+        this.tagLine = in.readString();
+        this.followersCount = in.readString();
+        this.followingCount = in.readString();
+        this.bannerImageUrl = in.readString();
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+    public static final Creator<User> CREATOR = new Creator<User>() {
         public User createFromParcel(Parcel source) {
             return new User(source);
         }
@@ -91,4 +126,12 @@ public class User extends Model implements Parcelable {
             return new User[size];
         }
     };
+
+    public void setBannerImage(JSONObject response) {
+        try {
+            this.bannerImageUrl = response.getJSONObject("sizes").getJSONObject("mobile").getString("url");
+        } catch (org.json.JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

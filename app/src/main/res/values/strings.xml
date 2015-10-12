@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Twitter Client</string>
-    <string name="title_activity_timeline">Home Timeline</string>
+    <string name="title_activity_timeline">Home</string>
     <string name="login_label">Connect to Twitter</string>
 
     <string name="hello_world">Hello world!</string>
@@ -14,7 +14,9 @@
     <string name="detail_favorites">FAVORITES</string>
     <string name="neutral">Close</string>
     <string name="reply">in reply to</string>
-
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="following">FOLLOWING</string>
+    <string name="followers">FOLLOWERS</string>
 
 
 </resources>

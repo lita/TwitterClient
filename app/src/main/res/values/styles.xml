@@ -8,6 +8,7 @@
         -->
         <item name="android:dialogTheme">@style/Theme.Compose</item>
 
+
     </style>
 
     <!-- Application theme. -->
@@ -19,6 +20,19 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowTitleSize">0dp</item>
+    </style>
+
+    <style name="TwitterTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">@color/primary_twitter_bar</item>
+        <item name="tabSelectedTextColor">@color/primary_twitter_dark</item>
+        <item name="tabTextAppearance">@style/TwitterTabTextAppearance</item>
+        <item name="tabBackground">@color/white</item>
+    </style>
+
+    <style name="TwitterTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/primary_twitter_bar</item>
+        <item name="textAllCaps">true</item>
     </style>
 
 </resources>

@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import com.codepath.apps.twitterclient.R;
 import com.codepath.apps.twitterclient.network.TwitterRestClient;
@@ -20,7 +21,9 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterRestClient
 		ActionBar actionBar = getSupportActionBar();
 		if (actionBar != null) {
 			LayoutInflater inflater = LayoutInflater.from(this);
-			View header = inflater.inflate(R.layout.action_bar_login, null);
+			View header = inflater.inflate(R.layout.action_bar, null);
+			TextView tvTitle = (TextView) header.findViewById(R.id.tvTitle);
+			tvTitle.setText(getResources().getString(R.string.login_label));
 			actionBar.setBackgroundDrawable(ContextCompat.getDrawable(this,
 					R.drawable.main_twitter_actionbar_background));
 			actionBar.setDisplayShowTitleEnabled(false);

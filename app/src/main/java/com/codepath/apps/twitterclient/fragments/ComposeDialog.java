@@ -1,7 +1,7 @@
 package com.codepath.apps.twitterclient.fragments;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
+import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -32,7 +32,7 @@ public class ComposeDialog extends DialogFragment {
     final static int TWITTER_CHARACTER_LIMIT = 140;
 
     public interface ComposeTweetListener {
-        void sendTweet(String tweet);
+        void sendTweet(String tweet, @Nullable Tweet reTweet);
     }
 
     private EditText etCompose;
@@ -41,6 +41,7 @@ public class ComposeDialog extends DialogFragment {
     private TextView tvCounter;
     private TextWatcher editTextListener;
     private RoundedImageView rivUserProfile;
+    private Tweet retweet;
 
     public ComposeDialog() {
 
@@ -96,9 +97,9 @@ public class ComposeDialog extends DialogFragment {
         tvCounter = (TextView) view.findViewById(R.id.tvCounter);
 
         User user = getArguments().getParcelable("user");
-        Tweet tweet = getArguments().getParcelable("retweet");
-        if (tweet != null) {
-            String username = tweet.getUser().getScreenNameForView();
+        retweet = getArguments().getParcelable("retweet");
+        if (retweet != null) {
+            String username = retweet.getUser().getScreenNameForView();
             etCompose.setText(username);
             etCompose.setSelection(username.length());
         }
@@ -113,7 +114,7 @@ public class ComposeDialog extends DialogFragment {
                 }
 
                 ComposeTweetListener listener = (ComposeTweetListener) getActivity();
-                listener.sendTweet(tweet);
+                listener.sendTweet(tweet, retweet);
                 dismiss();
             }
         });
