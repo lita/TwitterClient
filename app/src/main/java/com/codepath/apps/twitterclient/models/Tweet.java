@@ -38,6 +38,18 @@ public class Tweet extends Model implements Parcelable {
     private String inReplyToScreenName;
     @Column(name="mediaUrl")
     private String mediaUrl;
+    @Column(name="retweet")
+    private boolean retweet;
+    @Column(name="retweetUser")
+    private User retweetUser;
+
+    public boolean isRetweet() {
+        return retweet;
+    }
+
+    public User getRetweetUser() {
+        return retweetUser;
+    }
 
     public String getMediaUrl() {
         return mediaUrl;
@@ -96,6 +108,11 @@ public class Tweet extends Model implements Parcelable {
     public static Tweet fromJSON(JSONObject jsonObject) {
         Tweet tweet = new Tweet();
         try {
+            tweet.retweet = jsonObject.getBoolean("retweeted");
+            if (tweet.retweet) {
+                tweet.retweetUser =  User.fromJSON(jsonObject.getJSONObject("user"));
+                jsonObject = jsonObject.getJSONObject("retweeted_status");
+            }
             tweet.body = processCaptionsToHTML(jsonObject.getString("text"));
             tweet.uid = jsonObject.getLong("id");
             tweet.createdAt = jsonObject.getString("created_at");
@@ -162,6 +179,11 @@ public class Tweet extends Model implements Parcelable {
     public Tweet() {
     }
 
+    public void incrementFavoriteCount() {
+        int favCount = Integer.getInteger(favoriteCount);
+        favoriteCount = Integer.toString(favCount + 1);
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -177,6 +199,8 @@ public class Tweet extends Model implements Parcelable {
         dest.writeString(this.favoriteCount);
         dest.writeString(this.inReplyToScreenName);
         dest.writeString(this.mediaUrl);
+        dest.writeByte(retweet ? (byte) 1 : (byte) 0);
+        dest.writeParcelable(this.retweetUser, 0);
     }
 
     protected Tweet(Parcel in) {
@@ -188,6 +212,8 @@ public class Tweet extends Model implements Parcelable {
         this.favoriteCount = in.readString();
         this.inReplyToScreenName = in.readString();
         this.mediaUrl = in.readString();
+        this.retweet = in.readByte() != 0;
+        this.retweetUser = in.readParcelable(User.class.getClassLoader());
     }
 
     public static final Creator<Tweet> CREATOR = new Creator<Tweet>() {
@@ -199,9 +225,4 @@ public class Tweet extends Model implements Parcelable {
             return new Tweet[size];
         }
     };
-
-    public void incrementFavoriteCount() {
-        int favCount = Integer.getInteger(favoriteCount);
-        favoriteCount = Integer.toString(favCount + 1);
-    }
 }

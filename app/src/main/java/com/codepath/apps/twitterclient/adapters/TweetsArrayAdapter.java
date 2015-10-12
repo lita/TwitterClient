@@ -45,7 +45,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
         TextView tvCreatedAt;
         TextView tvRetweetCount;
         TextView tvFavoriteCount;
-        TextView tvReplyTo;
+        TextView tvTweetHeader;
         ImageView ivMedia;
     }
     public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
@@ -66,7 +66,7 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
             viewHolder.tvCreatedAt = (TextView) convertView.findViewById(R.id.tvCreatedAt);
             viewHolder.tvFavoriteCount = (TextView) convertView.findViewById(R.id.tvFavoriteCount);
             viewHolder.tvRetweetCount = (TextView) convertView.findViewById(R.id.tvRetweetCount);
-            viewHolder.tvReplyTo = (TextView) convertView.findViewById(R.id.tvReplyTo);
+            viewHolder.tvTweetHeader = (TextView) convertView.findViewById(R.id.tvTweetHeader);
             viewHolder.ivMedia = (ImageView) convertView.findViewById(R.id.ivMedia);
             viewHolder.ibReply = (ImageButton) convertView.findViewById(R.id.ibReply);
             viewHolder.ibRetweet = (ImageButton) convertView.findViewById(R.id.ibRetweet);
@@ -122,10 +122,14 @@ public class TweetsArrayAdapter extends ArrayAdapter<Tweet> {
 
         if (tweet.getInReplyToScreenName() != null) {
             String replyText = getContext().getResources().getString(R.string.reply);
-            viewHolder.tvReplyTo.setText(replyText + " " + tweet.getInReplyToScreenNameForView());
-            viewHolder.tvReplyTo.setTextSize(12);
+            viewHolder.tvTweetHeader.setText(replyText + " " + tweet.getInReplyToScreenNameForView());
+            viewHolder.tvTweetHeader.setTextSize(12);
+        } else if (tweet.isRetweet()) {
+            String retweetText = getContext().getResources().getString(R.string.retweeted);
+            viewHolder.tvTweetHeader.setText(tweet.getRetweetUser().getName() + " " + retweetText);
+            viewHolder.tvTweetHeader.setTextSize(12);
         } else {
-            viewHolder.tvReplyTo.setTextSize(0);
+            viewHolder.tvTweetHeader.setTextSize(0);
         }
 
         Picasso.with(getContext())

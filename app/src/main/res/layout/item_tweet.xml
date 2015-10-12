@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="Small Text"
-            android:id="@+id/tvReplyTo"
+            android:id="@+id/tvTweetHeader"
             android:textSize="0dp"
             android:textColor="@color/gray"
             android:layout_alignParentLeft="true"
@@ -44,7 +44,7 @@
             android:textStyle="bold"
             android:id="@+id/tvFullName"
             android:layout_marginRight="5dp"
-            android:layout_below="@id/tvReplyTo"
+            android:layout_below="@id/tvTweetHeader"
             android:gravity="top" />
         <TextView
             android:layout_width="wrap_content"

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
 
+import com.activeandroid.query.Select;
 import com.codepath.apps.twitterclient.adapters.TweetsArrayAdapter;
 import com.codepath.apps.twitterclient.models.Tweet;
 import com.codepath.apps.twitterclient.models.User;
@@ -16,6 +17,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by litacho on 10/10/15.
@@ -68,5 +70,23 @@ public class UserTimelineFragment extends TweetListFragment {
                 Log.i("DEUBG", errorResponse.toString());
             }
         }, lastId, screenname);
+    }
+
+    @Override
+    protected void propagateFromDatabase() {
+        if (user == null) {
+            super.propagateFromDatabase();
+            return;
+        }
+        List<Tweet> tweets = new Select().from(Tweet.class).limit(100).execute();
+
+        for(int i = 0; i < tweets.size(); i++) {
+            Tweet tweet = tweets.get(i);
+            if (tweet.getUser().getScreenName().equals(user.getScreenName())) {
+                add(tweet);
+            }
+        }
+        swipeContainer.setRefreshing(false);
+        pbProgressAction.setVisibility(View.GONE);
     }
 }
